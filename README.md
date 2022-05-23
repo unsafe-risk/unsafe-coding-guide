@@ -1,105 +1,41 @@
 # unsafe-go-coding-guide
 
+## [Hello World!](https://go.dev/play/p/HHEBfwAY1FF)
+
+```go
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"strings"
+)
+
+func main() {
+	buf := [5]byte{}
+	sb := strings.Builder{}
+	rnd := rand.New(rand.NewSource(-1965149424))
+	for k, i := rnd.Int31n(27)-1, 0; k != 0; k, i = rnd.Int31n(27)-1, i+1 {
+		buf[i] = byte('a' + k)
+	}
+	sb.Write(buf[:])
+	sb.WriteByte(' ')
+	rnd = rand.New(rand.NewSource(-1646310567))
+	for k, i := rnd.Int31n(27)-1, 0; k != 0; k, i = rnd.Int31n(27)-1, i+1 {
+		buf[i] = byte('a' + k)
+	}
+	sb.Write(buf[:])
+	sb.WriteByte('!')
+	fmt.Println(sb.String())
+}
+```
+
+```bash
+hello world!
+```
+
 ## chapter
 
-1. 모듈
-   1. 초기화
-   2. 빌드
-2. print와 println
-3. 비트
-   1. 비트 연산
-   2. 비교 연산
-4. 원시타입
-   1. 초기화
-   2. 산술 연산
-   3. 비교 연산
-   4. 상수
-5. 함수
-   1. 가변 인자
-   2. 익명 함수
-   3. defer
-6. 구조체
-   1. 접근 규칙
-   2. 메서드
-      1. 값을 받는 메서드
-      2. 참조를 받는 메서드
-   3. 임베딩
-      1. 프로모션
-   4. 패딩
-7. 포인터
-   1. 인터페이스
-   2. 이스케이프 애널라이시스
-      1. 댕글링 포인터
-   3. 언세이프 포인터
-8. 컬렉션
-    1. 배열
-       1. 문자열
-    2. 슬라이스
-       1. 바이트 버퍼
-       2. 문자열 버퍼
-       3. 슬라이싱
-       4. 슬라이스 연산
-    3. 맵
-9. 컨트롤 프로우
-   1. if
-      1. 선언문을 갖는 if
-   2. switch
-      1. 타입 단언
-   3. for
-      1. 전통적 반복
-      2. 조건 반복
-      3. 무한 반복
-10. 패키지
-    1.  접근 규칙
-    2.  init
-11. 에러
-    1.  error 인터페이스
-        1.  인터페이스 타입단언
-    2.  panic
-        1.  recover
-12. 고루틴
-    1.  채널
-        1.  버퍼
-        2.  병합
-        3.  전파
-        4.  브릿지
-    2.  뮤텍스
-        1.  데드락
-    3.  아토믹
-        1.  waitfree
-13. 컨텍스트
-    1.  withCancel
-    2.  withDeadline
-    3.  withTimeout
-    4.  withValue
-14. 주석
-    1.  문서화
-15. 컨벤션
-    1.  변수 정의
-    2.  함수 정의
-        1.  인자와 반환값
-    3.  에러 처리
-        1. if를 이용한 에러 처리
-        2. switch를 이용한 에러 처리
-        3. throw
-    4. 생성자
-       1. new
-       2. make
-       3. package new
-16. 느슨한 결합
-    1.  타입 공변성
-17. 테스트
-18. 벤치마크
-19. 빌트인 패키지
-    1.  fmt
-    2.  strings
-    3.  bytes
-    4.  os
-    5.  io
-    6.  json
-    7.  http
-    8.  crypto
-20. embed 패키지
-    1.  http에서 활용
-21. 제네릭
-    1.  컨트랙트
+1. module
+2. workspace
+3. error
