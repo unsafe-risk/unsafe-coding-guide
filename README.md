@@ -34,15 +34,21 @@ func main() {
 hello world!
 ```
 
-## chapter
+# chapter
 
 1. [module](README.md#module)
    1. [$GOPATH/bin](README.md#gopathbin-환경-변수에-대해)
 2. [workspace](README.md#workspace)
    1. [mono-repo](README.md#mono-repo)
-3. error
+3. [type](README.md#type)
+   1. [integer](README.md#integer)
+   2. [float](README.md#float-and-double)
+   3. [string and bytes](README.md#string-and-bytes)
+   4. [slice](README.md#slice)
+   5. [map](README.md#map)
+4. [error]()
 
-## module
+# module
 
 고랭은 예전에 하나의 사용자 당 하나의 `GOPATH`라는 작업 폴더를 주었고, 그 내부에서 모든 코드를 작성해야 했습니다. 그러나 고랭은 이후 특정 폴더마다 모듈을 생성하여 기존의 `GOPATH`를 대체하고 있습니다.
 
@@ -62,11 +68,11 @@ go 1.18
 3. `go install`: 모듈에서 쓰고 있지만 로컬 환경에 설치되지 않은 의존성을 다운로드합니다. 이 과정은 해당 모듈에 속한 프로젝트를 빌드(`go build`)하거나 실행(`go run`)하면 같이 실행됩니다.
 4. `go install`: `go install`에는 다른 사용 방법도 있습니다. [`minica`](https://github.com/jsha/minica)라는 레포는 고랭으로 작성된 실행 프로그램으로 테스트 용 TLS 인증서를 만들어주는 모듈입니다. 원래라면 컴파일된 파일을 받아서 환경 변수에 등록해주어야 하지만, `go install github.com/jsha/minica@latest`을 실행함으로 고랭에서 공용으로 쓰는 `$GOPATH/bin`에 로컬에서 컴파일하여 실행 파일을 만들어 줍니다.  
 
-### `$GOPATH/bin` 환경 변수에 대해
+## `$GOPATH/bin` 환경 변수에 대해
 
 윈도우에서는 해당 경로가 환경 변수에 이미 등록되어 있지만, 리눅스와 맥에서는 `.bashrc`나 `.zshrc`같은 파일에 기록해주어야합니다. 이 경로는 앞으로 `protobuf`나 `grpc` 등에서도 쓰이니 고랭 개발을 한다면 등록해 두는 것이 좋습니다.
 
-## workspace
+# workspace
 
 고랭은 하나의 `GOPATH`를 여러 모듈로 분리했지만, 이후 새로운 문제에 직면 했습니다. 하나의 모듈에서 같은 로컬에 존재하는 다른 모듈의 패키지를 불러올 때, `replace`같은 부가 동작이 필요하고, 하나의 작업 환경이라는 결속력이 부족했습니다.
 
@@ -90,10 +96,22 @@ use ./prac
 
 `prac` 폴더 내부에 어떤 이름으로 모듈을 생성했는지 상관없이 경로만 적어주면, 같은 워크스페이스의 다른 모듈에서 참조할 수 있습니다. 이렇게 나누게 되면 고랭에서 훨씬 간편하게 모노 레포를 만들 수 있습니다.
 
-### mono-repo
+## mono-repo
 
 모놀리틱 구조에서는 하나의 프로젝트가 하나의 아키텍처를 가지고, 자연스럽게 하나의 프로젝트가 하나의 깃 레포지토리를 가졌습니다. 이후 여러 프로젝트가 하나의 아키텍처를 이루는 MSA 구조가 되어서는 프로젝트를 분산하면서 깃 레포지토리도 분산시켜서, 하나의 아키텍처에 여러 깃 레포지토리를 가지게 되었습니다.
 
 하지만 깃 레포지토리가 분산되면서, 서로의 코드를 재활용하기 어렵고, 참조하는 다른 프로젝트의 코드의 히스토리를 파헤치는데 생각보다 많은 시간과 노력이 들게 되고, 빌드와 배포에 있어 분산되어 있기에 기존보다 많은 노력과 단계가 필요했습니다.
 
 그래서 아키텍처에 여러 프로젝트를 쓰는 건 유지하면서, 깃 레포지토리는 하나만 쓰는 모노 레포라는 개념이 나오게 됩니다. 고랭의 워크스페이스는 하위에 여러 모듈을 둘 수 있고, 각 모듈 마다 각기 다른 재사용 가능한 코드가 들어간 프로젝트나 실제 돌아가는 프로젝트를 두어 모노 레포를 구성할 수 있습니다.
+
+# type
+
+## integer
+
+## float and double
+
+## string and bytes
+
+## slice
+
+## map
