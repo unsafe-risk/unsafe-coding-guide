@@ -47,6 +47,7 @@ hello world!
    3. [complex](README.md#complex)
    4. [string and bytes](README.md#string-and-bytes)
    5. [slice](README.md#slice)
+      1. [slicing](README.md#slicing)
    6. [map](README.md#map)
 4. [error]()
 
@@ -133,6 +134,128 @@ var f = 3.141592 // float64
 고랭은 복소수 타입을 지원합니다. 32비트 부동소수점 2개를 각각 실수부, 허수부로 가지는 총 64비트 크기의 `complex64`와 64비트 부동소수점 2개를 실수부, 허수부로 가지는 128비트 크기의 `complex128`이 존재합니다. 정의는 `var c = 3 + 2i`같이 실수부 + 허수부i로 이루어집니다. 이때 타입 추론은 부동소수점이 64비트로 추론되었듯이 `complex128`로 추론됩니다.
 
 ## slice
+
+```go
+type slice struct {
+	array unsafe.Pointer
+	len   int
+	cap   int
+}
+```
+
+고랭의 슬라이스는 위처럼 베이스가 되는 배열(`array`), 배열의 전체 크기(`cap`), 배열에 들어가 있는 원소의 수(`len`)로 이루어져 있습니다. 일반적인 배열과 유사하지만 `append()` 함수를 사용하여 정확한 슬라이스의 크기를 모르더라도 원소를 계속 추가할 수 있습니다.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := []int{1, 2, 3}
+	a = append(a, 4, 5, 6)
+	a = append(a, 7, 8, 9)
+	fmt.Println(a)
+	fmt.Println(len(a))
+	fmt.Println(cap(a))
+}
+```
+
+[위 코드](https://go.dev/play/p/_FQIWgOtyca)를 실행하게 되면 슬라이스에서는 총 9개의 원소(`[1 2 3 4 5 6 7 8 9]`가 들어가 있는 걸 확인할 수 있고, 배열에 속한 원소의 수가 9(`len(a)`), 배열의 전체 길이가 12(`cap(a)`)인 것을 확인할 수 있습니다. 이는 `append()` 함수가 입력받은 슬라이스의 길이가 추가할 원소들을 수용할 수 없게 되면, 자동으로 더 큰 길이의 슬라이스를 생성하여, 기존 배열의 원소들을 복사하고 추가할 원소들을 추가하기 때문입니다.
+
+이 때 이전 슬라이스의 길이가 256 미만(`go 1.18 기준`)이라면 2배를 하게 되고, 그 이상이라면 1.25배를 하게 됩니다.
+
+### slicing
+
+슬라이스는 배열과 동일하게 인덱스를 통한 접근이 가능하며, 인덱스를 이용해 슬라이싱이란 작업도 가능합니다. 슬라이싱은 전체 슬라이스에서 일부분만 자르는 것으로, 기반이 된 슬라이스의 일부를 가리키는 새로운 슬라이스를 생성합니다.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	a = a[3:6]
+	fmt.Println(a)
+	fmt.Println(len(a))
+	fmt.Println(cap(a))
+}
+```
+
+[위 코드](https://go.dev/play/p/KLqGYiWAlzD)를 실행하게 되면 결과는 `[4 5 6]`이고, 원소 수는 3, 전체 배열의 용량은 7로 나오는 것을 확인할 수 있습니다. 이는 기반이 된 슬라이스의 기반 배열(`[1 2 3 4 5 6 7 8 9 10]`)을 그대로 가져온 후, 인덱스 3을 배열의 시작점으로 잡았을 뿐이기 때문입니다.
+
+이렇게 슬라이싱된 슬라이스는 이전 슬라이스와 기반 배열을 공유하고 있기 때문에 `append()` 함수 등을 이용하여 작업을 하지 않는다면 데이터를 오염시킬 우려가 있습니다.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	b := a[3:6]
+	b[0] = 100
+	fmt.Println(a)
+}
+```
+
+[위 코드](https://go.dev/play/p/WtX5_xffRlN)를 실행하면 수정한 건 `b` 슬라이스지만, `a` 슬라이스를 출력했을 때 4가 100으로 바뀐 결과(`[1 2 3 100 5 6 7 8 9 10]`)가 출력되는 걸 확인할 수 있습니다. 이 문제는 `append()` 함수를 사용할 때도 문제가 될 수 있습니다.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	b := a[3:6]
+	b = append(b, 100)
+	fmt.Println(a)
+}
+```
+
+[위 코드](https://go.dev/play/p/N25psKOtRUP)를 실행하면 `b`에 `append()` 함수로 100을 추가했는데 `a` 슬라이스의 7번째 원소가 100으로 바뀐 것(`[1 2 3 4 5 6 100 8 9 10]`을 확인할 수 있습니다. 이 이유는 `b` 슬라이스의 용량이 7이기에 `append()` 함수가 여유 공간이 있으니 용량을 하나 땡겨서 100을 추가한 것입니다. 이 문제는 비교적 쉽게 해결할 수 있습니다. 
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	b := a[3:6:6]
+	b = append(b, 100)
+	fmt.Println(a)
+	fmt.Println(b)
+	fmt.Println(len(b))
+	fmt.Println(cap(b))
+}
+```
+
+[위 코드](https://go.dev/play/p/gAzODvNIZX8)는 `a` 슬라이스를 슬라이싱할 때 전체 용량을 지정합니다. 기반 배열에서 인덱스 3부터 인덱스 6까지 잡으면서, 슬라이싱할 전체 용량은 인덱스 0부터 인덱스 6까지이니 6으로 지정해줍니다. 그러면 기반 배열의 뒤쪽 원소나 공간에 상관없이 전체 용량이 6인 슬라이스가 됩니다. 이후 `b` 슬라이스에 `append()` 함수를 호출하면, `b` 슬라이스의 용량은 가득찬 걸로 되어 `a` 슬라이스의 값(`[1 2 3 4 5 6 7 8 9 10]`)과 `b` 슬라이스의 결과 값(`[4 5 6 100]`)은 독립적이게 됩니다.
+
+### copy
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	b := make([]int, 3)
+	copy(b, a[3:6])
+	b = append(b, 100)
+	fmt.Println(a)
+	fmt.Println(b)
+	fmt.Println(len(b))
+	fmt.Println(cap(b))
+}
+```
+
+위의 용량을 동반한 슬라이싱과 다르게 `copy(dst, src)` 함수를 사용하게 되면, 간편하게 새로운 슬라이스에 슬라이싱한 값들을 복사할 수 있습니다. `copy(dst, src)` 함수는 2개의 매개변수, 복사한 값이 저장될 슬라이스와 복사할 값이 저장된 슬라이스를 받습니다. 후자의 슬라이스의 값들을 전자의 슬라이스에 저장하게 되어 `b`는 `copy()`를 호출한 시점에 길이 3, 용량 3의 별도의 슬라이스가 되어, 기존 슬라이스에 영향을 끼칠 수 없게 됩니다.
+
+`copy(dst, src)` 함수는 `src` 슬라이스의 원소 수가 `dst` 슬라이스의 길이를 초과할 경우, `dst` 슬라이스의 길이에 맞춰서 `src` 슬라이스의 원소를 복사합니다. 
 
 ## string and bytes
 
