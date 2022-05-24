@@ -106,12 +106,14 @@ use ./prac
 
 # type
 
+고랭은 모든 타입이 명시적인 값 타입입니다. 
+
 ## integer
 
 ## float and double
 
-## string and bytes
-
 ## slice
+
+## string and bytes
 
 ## map
