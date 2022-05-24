@@ -42,10 +42,12 @@ hello world!
    1. [mono-repo](README.md#mono-repo)
 3. [type](README.md#type)
    1. [integer](README.md#integer)
+      1. [type inference](README.md#type-inference)
    2. [float](README.md#float-and-double)
-   3. [string and bytes](README.md#string-and-bytes)
-   4. [slice](README.md#slice)
-   5. [map](README.md#map)
+   3. [complex](README.md#complex)
+   4. [string and bytes](README.md#string-and-bytes)
+   5. [slice](README.md#slice)
+   6. [map](README.md#map)
 4. [error]()
 
 # module
@@ -106,11 +108,29 @@ use ./prac
 
 # type
 
-고랭은 모든 타입이 명시적인 값 타입입니다. 
+고랭은 인터페이스를 제외하면 명시적인 값 타입입니다. 파이썬이나 자바같이 생성된 변수가 암시적으로 간접 참조를 하는 경우는 없습니다. 만약 간접 참조를 하게 된다면 C나 C++에서 했던 것처럼 포인터 연산을 사용하여 명시적으로 하게 됩니다.
 
 ## integer
 
+고랭에는 총 5개의 부호 있는 정수형과 총 5개의 부호 없는 정수형이 있습니다. 부호 있는 정수형은 `int8`, `int16`, `int32`, `int64`, `int`가 있고, 부호 없는 정수형은 각각의 앞에 `u`를 붙인 형태로 `uint8`, `uint16`, `uint32`, `uint64`, `uint`가 있습니다. 각각 8비트, 16비트, 32비트, 64비트의 크기를 가지는 부호 있는/부호 없는 정수형을 의미하고, 비트 수가 표기 되지 않은 `int`와 `uint`는 32비트 아키텍처에서는 32비트의 크기를, 64비트 아키텍처에서는 64비트의 크기를 가집니다.
+
+### type inference
+
+고랭에는 타입 추론이란게 있습니다. `var i = 32`라고 선언하면서 동시에 정의할 때, 고랭은 자동으로 이를 정수형이라고 판단합니다. 이때 정수형은 기본적으로 `int` 타입으로 타입이 추론됩니다. `int`는 위에서 작성했다시피 32비트 아키텍처와 64비트 아키텍처에서 각각 32비트, 64비트의 크기를 가지므로 대상 아키텍처에 주의해서 사용해야합니다.
+
+고랭의 상수는 매우 큰 크기(`256bit`)를 가지고 있습니다. 비록 컴파일 타임에 모두 계산되어 사라지지만, 때에 따라서 자동으로 추론되는 타입에 의해 값이 유실되어 저장될 것입니다. 혹은 8비트의 공간만 있어도 되지만 32비트나 64비트의 공간을 사용하여 메모리를 낭비하게 될 수도 있습니다. 그럴 때는 상수에 형변환(`type conversion`)을 적용하여 타입 추론을 원하는 방향으로 적용할 수 있습니다. `var i8 = int8(32)`로 선언 및 정의하게 되면 `int8` 타입으로 추론됩니다.
+
 ## float and double
+
+고랭의 실수형은 단 두 가지만 존재합니다. 32비트 크기를 가지는 단정밀도 부동소수점인 `float32`와 64비트 크기를 가지는 배정밀도 부동소수점인 `float64`입니다. `float64`는 다른 언어에서 `double`이나 `Double`로도 많이 쓰입니다. 부동소수점 타입은 타입 추론 시, `float64`가 기본으로 추론됩니다. 
+
+```go
+var f = 3.141592 // float64
+```
+
+## complex
+
+고랭은 복소수 타입을 지원합니다. 32비트 부동소수점 2개를 각각 실수부, 허수부로 가지는 총 64비트 크기의 `complex64`와 64비트 부동소수점 2개를 실수부, 허수부로 가지는 128비트 크기의 `complex128`이 존재합니다. 정의는 `var c = 3 + 2i`같이 실수부 + 허수부i로 이루어집니다. 이때 타입 추론은 부동소수점이 64비트로 추론되었듯이 `complex128`로 추론됩니다.
 
 ## slice
 
