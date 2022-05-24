@@ -50,6 +50,7 @@ hello world!
    5. [slice](README.md#slice)
       1. [slicing](README.md#slicing)
    6. [map](README.md#map)
+      1. [set](README.md#set)
 4. [error]()
 
 # module
@@ -317,3 +318,5 @@ func main() {
 어느 방법을 사용하더라도 문자열은 불변이므로 바이트 슬라이스에서 수정하려고 하면 런타임 패닉이 발생하니 주의하여야합니다. 
 
 ## map
+
+### set
