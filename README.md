@@ -45,7 +45,8 @@ hello world!
       1. [type inference](README.md#type-inference)
    2. [float](README.md#float-and-double)
    3. [complex](README.md#complex)
-   4. [string and bytes](README.md#string-and-bytes)
+   4. [string](README.md#string)
+      1. [string and byte slice](README.md#string-and-byte-slice)
    5. [slice](README.md#slice)
       1. [slicing](README.md#slicing)
    6. [map](README.md#map)
@@ -257,6 +258,62 @@ func main() {
 
 `copy(dst, src)` 함수는 `src` 슬라이스의 원소 수가 `dst` 슬라이스의 길이를 초과할 경우, `dst` 슬라이스의 길이에 맞춰서 `src` 슬라이스의 원소를 복사합니다. 
 
-## string and bytes
+## string
+
+고랭의 문자열은 C 언어의 그것과는 다르게 동작합니다. C 언어의 문자열은 단순 `char` 배열로 이루어지며, 문자열 마지막에 널(`0`)이 들어가서 마지막임을 표시하는 정도였습니다.
+
+```go
+type stringStruct struct {
+	str unsafe.Pointer
+	len int
+}
+```
+
+위 구조체는 실제 고랭(`go 1.18 기준`)에서 사용하는 문자열 구조체입니다. 슬라이스와 비슷한 형태를 하고 있지만, 배열의 전체 용량이 존재하지 않습니다. 그 이유는 고랭의 문자열은 다른 현대 언어가 으레 그렇듯 불변이기 때문입니다. `str` 멤버는 문자열이 저장된 `byte` 배열을 가리키고, `len` 멤버는 그 배열의 길이를 저장합니다. 
+
+### string and byte slice
+
+고랭은 문자열을 `byte` 배열로 저장하고 있기 때문에, `byte` 슬라이스와 `cap` 변수가 있냐 없냐의 차이만 있을 뿐 거의 동일함을 알 수 있습니다. 하지만 이 때문에 고랭에서 문자열을 바이트 슬라이스로 바꾸게 되면 문자열 내부 배열을 전부 복사하게 됩니다. 그래서 고퍼들은 문자열을 바이트 슬라이스로 만들 때, 복사가 발생하지 않도록 적지 않은 시도를 했고, 몇가지 코드들이 남았습니다.
+
+```go
+package main
+
+import (
+	"fmt"
+	"reflect"
+	"unsafe"
+)
+
+func main() {
+	a := "test string"
+	b := unsafe.Slice((*byte)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&a)).Data)), len(a))
+	fmt.Println(b)
+}
+```
+
+[이 코드](https://go.dev/play/p/KAZ5iIfjHic)는 문자열을 로우 포인터로 만들어 강제로 문자열 헤더에 대입하고, 헤더의 데이터(위 문자열 헤더의 `str`에 해당하는 바이트 배열) 멤버를 문자열 길이 만큼의 슬라이스로 재구성 해주는 코드입니다. 
+
+```go
+package main
+
+import (
+	"fmt"
+	"reflect"
+	"unsafe"
+)
+
+func main() {
+	a := "test string"
+	b := make([]byte, 0)
+	(*reflect.SliceHeader)(unsafe.Pointer(&b)).Data = (*reflect.StringHeader)(unsafe.Pointer(&a)).Data
+	(*reflect.SliceHeader)(unsafe.Pointer(&b)).Len = len(a)
+	(*reflect.SliceHeader)(unsafe.Pointer(&b)).Cap = len(a)
+	fmt.Println(b)
+}
+```
+
+[다음 코드](https://go.dev/play/p/t-LwqO4yhkE)는 이전 코드와 비슷하게 문자열의 데이터 멤버를 가져옵니다. 다른 점은 미리 바이트 슬라이스를 선언하고 해당 바이트 슬라이스를 슬라이스 헤더로 캐스팅하여 데이터를 대입합니다. 각 길이와 용량에는 문자열의 길이와 용량을 대입합니다. 
+
+어느 방법을 사용하더라도 문자열은 불변이므로 바이트 슬라이스에서 수정하려고 하면 런타임 패닉이 발생하니 주의하여야합니다. 
 
 ## map
