@@ -51,7 +51,7 @@ hello world!
       1. [slicing](README.md#slicing)
    6. [map](README.md#map)
       1. [set](README.md#set)
-4. [error]()
+4. [error](README.md#error)
 
 # module
 
@@ -424,4 +424,6 @@ func main() {
 ```
 
 [이 코드](https://go.dev/play/p/hkpjgnW07DK)는 `struct{}`를 활용합니다. 이 구조체는 빈 구조체라고 부르며, 그 어떤 멤버도 가지고 있지 않기 때문에 메모리에서 차지하는 크기가 `0`입니다. 이렇게 만든 맵은 키의 크기 만큼만 메모리를 차지하게 되어 `bool`보다 8 비트씩 공간을 덜 차지합니다. 대신 `bool`을 값의 타입으로 가질 때와 달리 두번째 반환값인 `ok`를 활용해야해서 코드가 아주 조금 늘어난다는 단점이 있습니다.
+
+# error
 
