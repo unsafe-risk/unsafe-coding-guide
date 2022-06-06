@@ -23,8 +23,9 @@ jobs:
       run: snowiki
 
     - name: Git Config
-      run: git config --global user.name "github-actions[bot]"
-      run: git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      run: | 
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
     - name: Git Add
       run: git add .
