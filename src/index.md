@@ -1,4 +1,4 @@
-# Unsafe Go Coding Guide
+# Unsafe Coding Guide
 
 이 페이지는 운사페 고 코딩 가이드(`unsafe go coding guide`)의 메인페이지입니다.
 
