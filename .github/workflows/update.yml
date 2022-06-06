@@ -21,6 +21,8 @@ jobs:
 
     - name: Build Public
       run: snowiki
+      env:
+        WIKI_NAME: Unsafe Coding Guide
 
     - name: Git Config
       run: | 
