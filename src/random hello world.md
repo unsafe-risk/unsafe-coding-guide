@@ -32,4 +32,4 @@ func main() {
 hello world!
 ```
 
-#math_rand #hello_world
+#math_rand #hello_world #go

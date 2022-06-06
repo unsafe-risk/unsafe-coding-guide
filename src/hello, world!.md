@@ -14,4 +14,4 @@ func main() {
 Hello, World!
 ```
 
-#hello_world
+#hello_world #go
