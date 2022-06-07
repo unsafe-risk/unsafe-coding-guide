@@ -80,4 +80,4 @@ func (s *Stack[T]) Pop() (value T, check bool) {
 }
 ```
 
-#stack #go #linked_list
+#stack #go #linked_list #generic

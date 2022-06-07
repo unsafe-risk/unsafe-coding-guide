@@ -84,3 +84,5 @@ func (q *Queue[T]) Pop() (value T, check bool) {
 	return value, true
 }
 ```
+
+#queue #go #linked_list #generic
