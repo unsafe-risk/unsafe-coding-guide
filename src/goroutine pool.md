@@ -36,4 +36,4 @@ func main() {
 }
 ```
 
-#gopool #go
+#gopool #go #goroutine
