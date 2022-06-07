@@ -10,4 +10,4 @@
 
 이 위키의 레포는 [unsafe-risk](https://github.com/unsafe-risk/unsafe-coding-guide)에 있으며, 마크다운 트랜스파일러는 [snowiki](https://github.com/snowmerak/snowiki)를 사용합니다.
 
-문서나 내용에 대한 기여는 언제나 환영합니다. 위 레포에 풀리퀘스트로 해주세요!
+문서나 내용에 대한 기여는 언제나 환영합니다! 위 레포에 풀리퀘스트로 해주세요!
