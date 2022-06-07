@@ -19,13 +19,13 @@ jobs:
     - name: Install Dependencies
       run: go install github.com/snowmerak/snowiki@latest
 
-    - name: Copy google
-      run: cp googlecaa51ff5aeee159a.html public
-
     - name: Build Public
       run: snowiki
       env:
         WIKI_NAME: Unsafe Coding Guide
+
+    - name: Copy google
+      run: cp googlecaa51ff5aeee159a.html public
 
     - name: Git Config
       run: | 
