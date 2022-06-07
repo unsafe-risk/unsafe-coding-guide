@@ -1,45 +1,45 @@
-/china npm.html
-/china pip.html
-/go hash.html
-/go module.html
-/go type.html
-/go workspace.html
-/hello, world!.html
-/index.html
-/random hello world.html
-/tags.html
-/tags/pip.html
-/tags/SHA.html
-/tags/blake2.html
-/tags/blake2s.html
-/tags/module.html
-/tags/monorepo.html
-/tags/workspace.html
-/tags/SHA1.html
-/tags/SHA2.html
-/tags/FNV-1a.html
-/tags/set.html
-/tags/hello_world.html
-/tags/double.html
-/tags/slice.html
-/tags/slicing.html
-/tags/map.html
-/tags/type.html
-/tags/int.html
-/tags/npm.html
-/tags/SHA256.html
-/tags/blake2b.html
-/tags/hash.html
-/tags/string.html
-/tags/empty_struct.html
-/tags/china.html
-/tags/SHA512.html
-/tags/FNV-1.html
-/tags/go.html
-/tags/uint.html
-/tags/type_inference.html
-/tags/byte_slice.html
-/tags/SHA3.html
-/tags/float.html
-/tags/complex.html
-/tags/math_rand.html
+https://unsafe.v8.run/china npm.html
+https://unsafe.v8.run/china pip.html
+https://unsafe.v8.run/go hash.html
+https://unsafe.v8.run/go module.html
+https://unsafe.v8.run/go type.html
+https://unsafe.v8.run/go workspace.html
+https://unsafe.v8.run/hello, world!.html
+https://unsafe.v8.run/index.html
+https://unsafe.v8.run/random hello world.html
+https://unsafe.v8.run/tags.html
+https://unsafe.v8.run/tags/SHA3.html
+https://unsafe.v8.run/tags/int.html
+https://unsafe.v8.run/tags/set.html
+https://unsafe.v8.run/tags/math_rand.html
+https://unsafe.v8.run/tags/SHA256.html
+https://unsafe.v8.run/tags/hash.html
+https://unsafe.v8.run/tags/map.html
+https://unsafe.v8.run/tags/blake2s.html
+https://unsafe.v8.run/tags/type_inference.html
+https://unsafe.v8.run/tags/slicing.html
+https://unsafe.v8.run/tags/pip.html
+https://unsafe.v8.run/tags/FNV-1a.html
+https://unsafe.v8.run/tags/blake2.html
+https://unsafe.v8.run/tags/blake2b.html
+https://unsafe.v8.run/tags/uint.html
+https://unsafe.v8.run/tags/double.html
+https://unsafe.v8.run/tags/byte_slice.html
+https://unsafe.v8.run/tags/npm.html
+https://unsafe.v8.run/tags/SHA2.html
+https://unsafe.v8.run/tags/float.html
+https://unsafe.v8.run/tags/complex.html
+https://unsafe.v8.run/tags/string.html
+https://unsafe.v8.run/tags/hello_world.html
+https://unsafe.v8.run/tags/SHA1.html
+https://unsafe.v8.run/tags/FNV-1.html
+https://unsafe.v8.run/tags/module.html
+https://unsafe.v8.run/tags/empty_struct.html
+https://unsafe.v8.run/tags/workspace.html
+https://unsafe.v8.run/tags/monorepo.html
+https://unsafe.v8.run/tags/china.html
+https://unsafe.v8.run/tags/SHA.html
+https://unsafe.v8.run/tags/type.html
+https://unsafe.v8.run/tags/SHA512.html
+https://unsafe.v8.run/tags/go.html
+https://unsafe.v8.run/tags/slice.html
