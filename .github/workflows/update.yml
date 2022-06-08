@@ -24,6 +24,7 @@ jobs:
       env:
         WIKI_NAME: Unsafe Coding Guide
         SITE_DOMAIN: https://unsafe.v8.run
+        LANG: ko
 
     - name: Copy google
       run: cp googlecaa51ff5aeee159a.html public
