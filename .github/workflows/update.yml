@@ -39,7 +39,7 @@ jobs:
         if [[ `git status --porcelain` ]]; then
           git add .
           git commit -m "Update Wiki Pages `date`"
-          git push origin deploy
+          git push origin main
         else
           echo "Nothing to commit, working directory clean."
         fi 
